@@ -19,7 +19,7 @@ Example flexipatch builds this finalizer can be used with:
 
 Example usage:
 
-```bash
+```
 $ ./flexipatch-finalizer.sh
 Usage: flexipatch-finalizer.sh [OPTION?]
 
