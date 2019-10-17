@@ -9,6 +9,7 @@ Example flexipatch builds this finalizer can be used with:
    - [dwm-flexipatch](https://github.com/bakkeby/dwm-flexipatch)
    - [dmenu-flexipatch](https://github.com/bakkeby/dmenu-flexipatch)
    - [st-flexipatch](https://github.com/bakkeby/st-flexipatch)
+   - [slock-flexipatch](https://github.com/bakkeby/slock-flexipatch)
 
 :warning: Do make sure that you make a backup of your flexipatch build and your `patches.h` configuration file before running this script.
 
