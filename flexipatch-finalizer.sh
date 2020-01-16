@@ -262,7 +262,7 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 	if [[ $ECHO_COMMANDS = 1 ]]; then
 		INCLUDE_RE='*patch/*include.[hc][.]~'
 	fi
-	for FILE in $(find $DIRECTORY -path $INCLUDE_RE); do
+	for FILE in $(find $DIRECTORY -path "$INCLUDE_RE"); do
 		if [[ $(grep -c "#include " $FILE) = 0 ]]; then
 			if [[ $ECHO_COMMANDS = 1 ]]; then
 				echo "rm ${FILE%%.~}"
