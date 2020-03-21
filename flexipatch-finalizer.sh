@@ -4,6 +4,7 @@ KEEP_FILES=0
 ECHO_COMMANDS=0
 RUN_SCRIPT=0
 DIRECTORY=.
+OUTPUT_DIRECTORY=
 DEBUG=0
 
 if [[ $# = 0 ]]; then
@@ -14,7 +15,12 @@ while (( $# )); do
 	case "$1" in
 		-d|--directory)
 			shift
-			DIRECTORY=$1
+			DIRECTORY=$1 # source directory
+			shift
+			;;
+		-o|--output)
+			shift
+			OUTPUT_DIRECTORY=$1
 			shift
 			;;
 		--debug)
@@ -43,7 +49,8 @@ while (( $# )); do
 			printf "\n\n"
 			printf "$fmt" "-r, --run" "include this flag to confirm that you really do want to run this script"
 			printf "\n"
-			printf "$fmt" "-d, --directory <dir>" "the flexipatch directory to process (defaults to current directory)"
+			printf "$fmt" "-d, --directory <dir>" "the flexipatch source directory to process (defaults to current directory)"
+			printf "$fmt" "-o, --output <dir>" "the output directory to store the processed files"
 			printf "$fmt" "-h, --help" "display this help section"
 			printf "$fmt" "-k, --keep" "keep temporary files and do not replace the original ones"
 			printf "$fmt" "-e, --echo" "echo commands that will be run rather than running them"
@@ -64,6 +71,19 @@ if [[ $RUN_SCRIPT = 0 ]]; then
 	echo "Re-run this command with the --run option to confirm that you really want to run this script."
 	echo "The changes this script makes are irreversible."
 	exit 1
+fi
+
+if [[ -z ${OUTPUT_DIRECTORY} ]]; then
+	echo "Output directory not specified, see -o"
+	exit 1
+fi
+
+DIRECTORY=$(readlink -f "${DIRECTORY}")
+OUTPUT_DIRECTORY=$(readlink -f "${OUTPUT_DIRECTORY}")
+if [[ $DIRECTORY != $OUTPUT_DIRECTORY ]]; then
+	mkdir -p "${OUTPUT_DIRECTORY}"
+	cp -r -f "${DIRECTORY}/." -t "${OUTPUT_DIRECTORY}"
+	DIRECTORY=${OUTPUT_DIRECTORY}
 fi
 
 if [[ ! -e ${DIRECTORY}/patches.h ]]; then
@@ -241,7 +261,7 @@ done
 
 # Delete unnecessary files
 if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
-	for FILE in $FILES_TO_DELETE; do
+	for FILE in $FILES_TO_DELETE ${DIRECTORY}/patches.def.h; do
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "rm $FILE"
 		else

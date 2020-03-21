@@ -29,6 +29,7 @@ This is a custom pre-processor designed to remove unused flexipatch patches and 
   -r, --run                      include this flag to confirm that you really do want to run this script
 
   -d, --directory <dir>          the flexipatch directory to process (defaults to current directory)
+  -o, --output <dir>             the output directory to store the processed files
   -h, --help                     display this help section
   -k, --keep                     keep temporary files and do not replace the original ones
   -e, --echo                     echo commands that will be run rather than running them
