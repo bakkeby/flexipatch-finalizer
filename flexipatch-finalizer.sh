@@ -303,3 +303,6 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 
 	done
 fi
+
+# Clean up the Makefile
+sed -r -i -e 's/ patches.h$//' -e '/^patches.h:$/{N;N;d;}' "${DIRECTORY}/Makefile"
