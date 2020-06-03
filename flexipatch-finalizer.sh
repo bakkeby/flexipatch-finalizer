@@ -261,6 +261,18 @@ done
 
 # Delete unnecessary files
 if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
+
+	# Remove dwmc shell script if patch not enabled
+	if [[ -f ${DIRECTORY}/patch/dwmc ]] && [[ $(grep -cE '^#define DWMC_PATCH +0 *$' ${DIRECTORY}/patches.h) > 0 ]]; then
+		if [[ $ECHO_COMMANDS = 1 ]]; then
+			echo "rm ${DIRECTORY}/patch/dwmc"
+			echo "sed -r -i -e '/cp -f patch\/dwmc/{N;N;d;}' \"${DIRECTORY}/Makefile\""
+		else
+			rm "${DIRECTORY}/patch/dwmc"
+			sed -r -i -e '/cp -f patch\/dwmc/{N;N;d;}' "${DIRECTORY}/Makefile"
+		fi
+	fi
+
 	for FILE in $FILES_TO_DELETE ${DIRECTORY}/patches.def.h; do
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "rm $FILE"
