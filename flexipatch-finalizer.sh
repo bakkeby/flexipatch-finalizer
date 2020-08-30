@@ -151,9 +151,13 @@ BEGIN {
 	while (( getline line < (DIRECTORY"/patches.h") ) > 0 ) {
 		split(line,f)
 		if ( f[1] ~ /^#define$/ ) {
-			patches[f[2]] = f[3]
+			if ( f[3] == 0 || f[3] == 1 ) {
+				patches[f[2]] = f[3]
+			} else {
+				patches[f[2]] = istrue(f)
+			}
 			if (DEBUG) {
-				print "Found " f[2] " = " f[3] > "/dev/stderr"
+				print "Found " f[2] " = " patches[f[2]] > "/dev/stderr"
 			}
 		}
 	}
