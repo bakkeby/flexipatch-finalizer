@@ -270,10 +270,10 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 	if [[ -f ${DIRECTORY}/patch/dwmc ]] && [[ $(grep -cE '^#define DWMC_PATCH +0 *$' ${DIRECTORY}/patches.h) > 0 ]]; then
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "rm ${DIRECTORY}/patch/dwmc"
-			echo "sed -r -i -e '/cp -f patch\/dwmc/{N;N;d;}' \"${DIRECTORY}/Makefile\""
+			echo "sed -r -i -e '/cp -f patch\/dwmc/d' \"${DIRECTORY}/Makefile\""
 		else
 			rm "${DIRECTORY}/patch/dwmc"
-			sed -r -i -e '/cp -f patch\/dwmc/{N;N;d;}' "${DIRECTORY}/Makefile"
+			sed -r -i -e '/cp -f patch\/dwmc/d' "${DIRECTORY}/Makefile"
 		fi
 	fi
 
