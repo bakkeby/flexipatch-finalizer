@@ -127,7 +127,7 @@ function istrue(f) {
 }
 
 function schedule_delete(file) {
-	/* Skip duplicates */
+	# Skip duplicates
 	for ( i = 1; i in files_to_delete; i++ ) {
 		if ( files_to_delete[i] == file) {
 			return
@@ -144,7 +144,7 @@ function is_flexipatch(patch) {
 }
 
 BEGIN {
-	/* Read patches.h and store patch settings in the patches associative array */
+	# Read patches.h and store patch settings in the patches associative array
 	if (DEBUG) {
 		print "Reading file " DIRECTORY "/patches.h" > "/dev/stderr"
 	}
@@ -173,7 +173,8 @@ BEGIN {
 	while (( getline line < $0) > 0 ) {
 		split(line,f)
 		if ( f[1] ~ /^#if$/ ) {
-			do_print[++level] = do_print[level]
+			level++;
+			do_print[level] = do_print[level-1]
 			has_printed[level] = 0
 			condition[level] = f[2]
 			if ( do_print[level] ) {
@@ -188,7 +189,8 @@ BEGIN {
 				continue
 			}
 		} else if ( f[1] ~ /^#ifdef$/ || f[1] ~ /^#ifndef$/ ) {
-			do_print[++level] = do_print[level]
+			level++;
+			do_print[level] = do_print[level-1]
 			has_printed[level] = 0
 			condition[level] = f[2]
 			if ( do_print[level] ) {
