@@ -95,7 +95,7 @@ fi
 FILES_TO_DELETE=$(find $DIRECTORY -name "*.c" -o -name "*.h" | awk -v DEBUG="$DEBUG" -v DIRECTORY="$DIRECTORY" '
 function istrue(f) {
 	ret = 0
-	for ( i = 2; i <= length(f); i++ ) {
+	for ( i = 2; i in f; i++ ) {
 		if ( f[i] == "||" ) {
 			if ( ret == -1 ) {
 				ret = 0
@@ -128,7 +128,7 @@ function istrue(f) {
 
 function schedule_delete(file) {
 	/* Skip duplicates */
-	for ( i = 1; i < length(files_to_delete); i++ ) {
+	for ( i = 1; i in files_to_delete; i++ ) {
 		if ( files_to_delete[i] == file) {
 			return
 		}
@@ -136,7 +136,7 @@ function schedule_delete(file) {
 	if (DEBUG) {
 		print "Scheduling file " file " for deletion." > "/dev/stderr"
 	}
-	files_to_delete[length(files_to_delete)] = file
+	files_to_delete[i] = file
 }
 
 function is_flexipatch(patch) {
@@ -245,7 +245,7 @@ BEGIN {
 }
 
 END {
-	for ( i = 1; i < length(files_to_delete); i++ ) {
+	for ( i = 1; i in files_to_delete; i++ ) {
 		print files_to_delete[i]
 	}
 }
