@@ -5,6 +5,7 @@ ECHO_COMMANDS=0
 RUN_SCRIPT=0
 DIRECTORY=.
 OUTPUT_DIRECTORY=
+KEEP_GITFILES=0
 DEBUG=0
 
 if [[ $# = 0 ]]; then
@@ -39,6 +40,10 @@ while (( $# )); do
 			shift
 			KEEP_FILES=1
 			;;
+		-g|--git)
+			shift
+			KEEP_GITFILES=1
+			;;
 		-h|--help)
 			shift
 			fmt="  %-31s%s\n"
@@ -53,6 +58,7 @@ while (( $# )); do
 			printf "$fmt" "-o, --output <dir>" "the output directory to store the processed files"
 			printf "$fmt" "-h, --help" "display this help section"
 			printf "$fmt" "-k, --keep" "keep temporary files and do not replace the original ones"
+			printf "$fmt" "-g, --git" "keep .git files"
 			printf "$fmt" "-e, --echo" "echo commands that will be run rather than running them"
 			printf "$fmt" "    --debug" "prints additional debug information to stderr"
 			printf "\nWarning! This script alters and removes files within the source directory."
@@ -293,6 +299,10 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 		else
 			rm $DIRECTORY/README.md
 		fi
+	fi
+
+	if [[ $KEEP_GITFILES = 0 ]]; then
+		rm -rf $DIRECTORY/.git*
 	fi
 
 	# Remove empty include files
