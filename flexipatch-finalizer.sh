@@ -207,7 +207,7 @@ BEGIN {
 				continue
 			}
 		} else if ( f[1] ~ /^#elif$/ ) {
-			if ( has_printed[level] == 0 && do_print[level-1] == 1 ) {
+			if ( (!is_flexipatch(condition[level]) || has_printed[level] == 0) && do_print[level-1] == 1 ) {
 				if ( istrue(f) ) {
 					has_printed[level] = 1
 					do_print[level] = 1
@@ -221,7 +221,7 @@ BEGIN {
 				continue
 			}
 		} else if ( f[1] ~ /^#else$/ ) {
-			if ( has_printed[level] == 0 && do_print[level-1] == 1 ) {
+			if ( (!is_flexipatch(condition[level]) || has_printed[level] == 0) && do_print[level-1] == 1 ) {
 				has_printed[level] = 1
 				do_print[level] = 1
 			} else {
