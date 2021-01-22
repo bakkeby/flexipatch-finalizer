@@ -285,6 +285,15 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 		fi
 	fi
 
+	# Remove layoutmenu.sh shell script if patch not enabled
+	if [[ -f ${DIRECTORY}/patch/layoutmenu.sh ]] && [[ $(grep -cE '^#define BAR_LAYOUTMENU_PATCH +0 *$' ${DIRECTORY}/patches.h) > 0 ]]; then
+		if [[ $ECHO_COMMANDS = 1 ]]; then
+			echo "rm ${DIRECTORY}/patch/layoutmenu.sh"
+		else
+			rm "${DIRECTORY}/patch/layoutmenu.sh"
+		fi
+	fi
+
 	for FILE in $FILES_TO_DELETE ${DIRECTORY}/patches.def.h; do
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "rm $FILE"
