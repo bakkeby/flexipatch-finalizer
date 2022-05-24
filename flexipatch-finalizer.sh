@@ -65,7 +65,7 @@ while (( $# )); do
 			printf "$fmt" "-k, --keep" "keep temporary files and do not replace the original ones"
 			printf "$fmt" "-g, --git" "keep .git files"
 			printf "$fmt" "-e, --echo" "echo commands that will be run rather than running them"
-			printf "$fmt" "-b, --branch" "perform a git checkout -b before processing to keep removal from being permenant"
+			printf "$fmt" "-b, --branch" "perform a git checkout before processing to keep removal from being permenant"
 			printf "$fmt" "    --debug" "prints additional debug information to stderr"
 			printf "\nWarning! This script alters and removes files within the source directory."
 			printf "\nWarning! This process is irreversible! Use with care. Do make a backup before running this."
