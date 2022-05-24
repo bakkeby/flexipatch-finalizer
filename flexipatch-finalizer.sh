@@ -48,6 +48,7 @@ while (( $# )); do
 		-b|--branch)
 		   	shift
 			GIT_BRANCH=1
+			KEEP_GITFILES=1
 			;;
 		-h|--help)
 			shift
