@@ -7,6 +7,7 @@ DIRECTORY=.
 OUTPUT_DIRECTORY=
 KEEP_GITFILES=0
 DEBUG=0
+GIT_BRANCH=0
 
 if [[ $# = 0 ]]; then
     set -- '-h'
@@ -44,6 +45,11 @@ while (( $# )); do
 			shift
 			KEEP_GITFILES=1
 			;;
+		-b|--branch)
+		   	shift
+			GIT_BRANCH=1
+			KEEP_GITFILES=1
+			;;
 		-h|--help)
 			shift
 			fmt="  %-31s%s\n"
@@ -60,6 +66,7 @@ while (( $# )); do
 			printf "$fmt" "-k, --keep" "keep temporary files and do not replace the original ones"
 			printf "$fmt" "-g, --git" "keep .git files"
 			printf "$fmt" "-e, --echo" "echo commands that will be run rather than running them"
+			printf "$fmt" "-b, --branch" "perform a git checkout before processing to keep removal from being permenant"
 			printf "$fmt" "    --debug" "prints additional debug information to stderr"
 			printf "\nWarning! This script alters and removes files within the source directory."
 			printf "\nWarning! This process is irreversible! Use with care. Do make a backup before running this."
@@ -147,6 +154,22 @@ function schedule_delete(file) {
 
 function is_flexipatch(patch) {
 	return patch ~ /_(PATCH|LAYOUT)$/
+}
+
+function change_branch() {
+	print "switching to branch finalized"
+	local existed_in_local=$(git branch --list finalized)
+	
+	if [[ -z ${existed_in_local} ]]; then
+        	git checkout finalized
+    	else
+        	git checkout -b finalized
+    	fi
+	
+}
+
+if (GIT_BRANCH) {
+  change_branch()
 }
 
 BEGIN {
