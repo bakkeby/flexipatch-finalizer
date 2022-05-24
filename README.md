@@ -33,6 +33,7 @@ This is a custom pre-processor designed to remove unused flexipatch patches and 
   -h, --help                     display this help section
   -k, --keep                     keep temporary files and do not replace the original ones
   -e, --echo                     echo commands that will be run rather than running them
+  -b, --branch                   perform a git checkout before processing to keep removal from being permenant
       --debug                    prints additional debug information to stderr
 
 Warning! This script alters and removes files within the source directory.
