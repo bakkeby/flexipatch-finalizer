@@ -247,7 +247,11 @@ BEGIN {
 		}
 
 		if ( do_print[level] ) {
+			if (prevline == "" && line == "") {
+				continue
+			}
 			print line > $0 ".~"
+			prevline = line
 		}
 	}
 }
