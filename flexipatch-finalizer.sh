@@ -44,6 +44,10 @@ while (( $# )); do
 			shift
 			KEEP_GITFILES=1
 			;;
+		-p|--patches)
+			shift
+			KEEP_PATCHES=1
+			;;
 		-h|--help)
 			shift
 			fmt="  %-31s%s\n"
@@ -59,6 +63,7 @@ while (( $# )); do
 			printf "$fmt" "-h, --help" "display this help section"
 			printf "$fmt" "-k, --keep" "keep temporary files and do not replace the original ones"
 			printf "$fmt" "-g, --git" "keep .git files"
+			printf "$fmt" "-p, --patches" "keep patches.h and the original config.h file"
 			printf "$fmt" "-e, --echo" "echo commands that will be run rather than running them"
 			printf "$fmt" "    --debug" "prints additional debug information to stderr"
 			printf "\nWarning! This script alters and removes files within the source directory."
@@ -267,6 +272,11 @@ END {
 for FILE in $(find $DIRECTORY -name "*.~"); do
 	chmod --reference=${FILE%%.~} ${FILE}
 	if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
+
+		if [[ $KEEP_PATCHES = 1 ]] && [[ "${FILE}" == "${DIRECTORY}/config.h.~" ]]; then
+			mv ${DIRECTORY}/config.h ${DIRECTORY}/config.orig.h
+		fi
+
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "mv ${FILE} ${FILE%%.~}"
 		else
@@ -299,6 +309,11 @@ if [[ $KEEP_FILES = 0 ]] || [[ $ECHO_COMMANDS = 1 ]]; then
 	fi
 
 	for FILE in $FILES_TO_DELETE ${DIRECTORY}/patches.def.h; do
+
+		if [[ $KEEP_PATCHES = 1 ]] && [[ "$FILE" == "${DIRECTORY}/patches.h" ]]; then
+			continue
+		fi
+
 		if [[ $ECHO_COMMANDS = 1 ]]; then
 			echo "rm $FILE"
 		else
