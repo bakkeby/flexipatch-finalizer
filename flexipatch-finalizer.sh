@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 KEEP_FILES=0
 ECHO_COMMANDS=0
